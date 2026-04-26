@@ -76,6 +76,20 @@ body {
     }
 }
 
+/* Social Links */
+.social-link:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+.social-link.whatsapp:hover {
+    background: #128C7E;
+}
+
+.social-link.facebook:hover {
+    background: #165EAB;
+}
+
 nav {
     display: flex;
     align-items: center;
@@ -205,6 +219,20 @@ main {
     background: var(--surface-hover);
 }
 
+.btn-whatsapp {
+    background: #25D366;
+    color: white;
+    width: 100%;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.btn-whatsapp:hover {
+    background: #1da851;
+    transform: translateY(-2px);
+}
+
+
 input,
 textarea,
 select {
@@ -317,12 +345,18 @@ select:focus {
     inset: 0;
     background: rgba(0, 0, 0, 0.7);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     z-index: 200;
     opacity: 0;
     pointer-events: none;
     transition: opacity var(--transition);
+    overflow-y: auto;
+    padding: 2rem 0;
+}
+
+body.modal-open {
+    overflow: hidden;
 }
 
 .modal.open {
@@ -425,14 +459,87 @@ footer {
 @media (max-width: 768px) {
     nav {
         padding: 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
     }
 
     .nav-links {
         gap: 0.8rem;
         font-size: 0.9rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .logo {
+        width: 100%;
+        text-align: center;
     }
 
     main {
         padding: 1rem;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .flex {
+        flex-direction: column;
+    }
+
+    .sort-container {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .social-links>div {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.75rem !important;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    nav {
+        padding: 0.75rem;
+    }
+
+    .nav-links {
+        gap: 0.5rem;
+        font-size: 0.85rem;
+    }
+
+    main {
+        padding: 0.75rem;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+        margin: 0.5rem;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .social-link {
+        justify-content: center;
     }
 }

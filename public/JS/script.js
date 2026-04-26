@@ -58,6 +58,7 @@ const DOM = {
 	filterBrand: document.getElementById("filter-brand"),
 	filterCondition: document.getElementById("filter-condition"),
 	sortPrice: document.getElementById("sort-price"),
+	featuredSort: document.getElementById("featured-sort"),
 }
 
 // 🛠️ UI Helpers
@@ -152,8 +153,34 @@ function renderCards(items, container) {
 }
 
 function renderFeatured() {
-	renderCards(products.slice(0, 4), DOM.featuredGrid)
+	let featuredItems = [...products]
+	const sortType = DOM.featuredSort.value
+
+	// Apply sorting logic
+	if (sortType === "name-asc") {
+		featuredItems.sort((a, b) => a.name.localeCompare(b.name))
+	} else if (sortType === "name-desc") {
+		featuredItems.sort((a, b) => b.name.localeCompare(a.name))
+	} else if (sortType === "oldest") {
+		featuredItems.sort(
+			(a, b) => new Date(a.updatedAt || 0) - new Date(b.updatedAt || 0),
+		)
+	} else if (sortType === "date-modified") {
+		featuredItems.sort(
+			(a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0),
+		)
+	} else {
+		// Default: Newest first
+		featuredItems.sort(
+			(a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0),
+		)
+	}
+
+	renderCards(featuredItems.slice(0, 4), DOM.featuredGrid)
 }
+
+// Featured Sort change listener
+DOM.featuredSort.addEventListener("change", renderFeatured)
 
 // 🔍 Filters & Sorting
 function applyFilters() {
@@ -212,8 +239,9 @@ document.addEventListener("click", (e) => {
         <p><strong>RAM:</strong> ${p.ram} | <strong>Storage:</strong> ${p.storage}</p>
       </div>
       <div style="font-size:1.5rem; color:var(--accent); font-weight:700; margin-bottom:1rem;">${formatPrice(p.price)}</div>
-      <button class="btn btn-primary contact-buy-btn">Contact to Buy</button>`
+      <a href="https://wa.me/254740470381?text=${encodeURIComponent(`Hi, I'm interested in the ${p.name} (KSh ${p.price}) listed on TechStore. Is it available?`)}" target="_blank" class="btn btn-whatsapp">💬 Buy via WhatsApp</a>`
 		DOM.detailModal.classList.add("open")
+		document.body.classList.add("modal-open")
 	}
 
 	if (target.matches(".contact-buy-btn")) {
@@ -249,6 +277,7 @@ document.addEventListener("click", (e) => {
 	// Close Modals
 	if (target.matches(".close-modal")) {
 		target.closest(".modal").classList.remove("open")
+		document.body.classList.remove("modal-open")
 	}
 })
 
