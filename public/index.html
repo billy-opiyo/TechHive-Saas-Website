@@ -67,7 +67,8 @@
 							><select id="filter-type">
 								<option value="all">All</option>
 								<option value="Laptop">Laptops</option>
-								<option value="iPhone">iPhones</option>
+								<option value="iPhones">iPhones</option>
+								<option value="Androids">Androids</option>
 							</select>
 						</div>
 						<div class="form-group">
@@ -78,6 +79,9 @@
 								<option value="HP">HP</option>
 								<option value="Dell">Dell</option>
 								<option value="Lenovo">Lenovo</option>
+								<option value="Samsung">Samsung</option>
+								<option value="Xiaomi">Xiaomi</option>
+								<option value="RedMi">RedMi</option>
 							</select>
 						</div>
 						<div class="form-group">
@@ -233,8 +237,9 @@
 					<div class="flex">
 						<div class="form-group" style="flex: 1">
 							<select id="p-type" required>
-								<option value="Laptop">Laptop</option>
-								<option value="iPhone">iPhone</option>
+								<option value="Laptops">Laptops</option>
+								<option value="iPhones">iPhones</option>
+								<option value="Androids">Androids</option>
 							</select>
 						</div>
 						<div class="form-group" style="flex: 1">
@@ -243,6 +248,9 @@
 								<option value="HP">HP</option>
 								<option value="Dell">Dell</option>
 								<option value="Lenovo">Lenovo</option>
+								<option value="Samsung">Samsung</option>
+								<option value="Xiaomi">Xiaomi</option>
+								<option value="RedMi">RedMi</option>
 							</select>
 						</div>
 					</div>
@@ -251,7 +259,7 @@
 							<input
 								type="number"
 								id="p-price"
-								placeholder="Price ($)"
+								placeholder="Price (Ksh)"
 								required
 							/>
 						</div>
@@ -264,18 +272,13 @@
 					</div>
 					<div class="flex">
 						<div class="form-group" style="flex: 1">
-							<input
-								type="text"
-								id="p-ram"
-								placeholder="RAM (e.g. 16GB)"
-								required
-							/>
+							<input type="text" id="p-ram" placeholder="RAM (16GB)" required />
 						</div>
 						<div class="form-group" style="flex: 1">
 							<input
 								type="text"
 								id="p-storage"
-								placeholder="Storage (e.g. 512GB SSD)"
+								placeholder="Storage (512GB HDD/SSD)"
 								required
 							/>
 						</div>
