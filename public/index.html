@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>TechStore | Premium Laptops & iPhones</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<!-- Add to <head> for faster Firebase loading -->
+		<link rel="preconnect" href="https://www.gstatic.com" crossorigin />
+		<link rel="dns-prefetch" href="https://www.gstatic.com" />
+		<link rel="stylesheet" href="CSS/style.css" />
+		<link rel="icon" href="IMG/" type="image/x-icon" />
+		<!-- Add right before </body> -->
+		<script type="module" src="JS/script.js" defer></script>
+	</head>
+	<body>
+		<div id="loader"><div class="spinner"></div></div>
+
+		<nav>
+			<div class="logo">TechStore</div>
+			<div class="nav-links">
+				<a data-page="home">Home</a>
+				<a data-page="products">Products</a>
+				<a data-page="contact">Contact</a>
+				<a data-page="admin-login" id="auth-link">Admin</a>
+				<button class="logout-btn hidden" id="logout-btn">Logout</button>
+				<button class="theme-toggle" title="Toggle Theme">🌓</button>
+			</div>
+		</nav>
+
+		<main id="app">
+			<section id="home" class="page active">
+				<header class="text-center" style="padding: 4rem 0">
+					<h1 style="font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 1rem">
+						Premium Tech, Transparent Pricing
+					</h1>
+					<p
+						style="
+							color: var(--text-muted);
+							max-width: 600px;
+							margin: 0 auto 2rem;
+						"
+					>
+						Curated laptops & iPhones. New & certified pre-owned. Direct from
+						admins to you.
+					</p>
+					<button class="btn btn-primary" id="browse-btn">
+						Browse Collection
+					</button>
+				</header>
+				<h2 style="margin-top: 3rem">Featured Arrivals</h2>
+				<div class="grid" id="featured-grid"></div>
+			</section>
+
+			<section id="products" class="page">
+				<h1>Marketplace</h1>
+				<div class="filters-layout">
+					<aside class="filter-box">
+						<div class="form-group">
+							<input type="text" id="search" placeholder="Search models..." />
+						</div>
+						<div class="form-group">
+							<label>Type</label
+							><select id="filter-type">
+								<option value="all">All</option>
+								<option value="Laptop">Laptops</option>
+								<option value="iPhone">iPhones</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label>Brand</label
+							><select id="filter-brand">
+								<option value="all">All Brands</option>
+								<option value="Apple">Apple</option>
+								<option value="HP">HP</option>
+								<option value="Dell">Dell</option>
+								<option value="Lenovo">Lenovo</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label>Condition</label
+							><select id="filter-condition">
+								<option value="all">Any</option>
+								<option value="New">New</option>
+								<option value="Used">Used</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label>Sort By</label
+							><select id="sort-price">
+								<option value="default">Relevance</option>
+								<option value="low-high">Price: Low → High</option>
+								<option value="high-low">Price: High → Low</option>
+							</select>
+						</div>
+						<button
+							class="btn btn-secondary"
+							id="reset-filters"
+							style="width: 100%; margin-top: 0.5rem"
+						>
+							Reset
+						</button>
+					</aside>
+					<div>
+						<div class="grid" id="products-grid"></div>
+						<p
+							id="no-results"
+							class="hidden text-center"
+							style="padding: 2rem; color: var(--text-muted)"
+						>
+							No products match your filters.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section id="admin-login" class="page">
+				<div style="max-width: 400px; margin: 2rem auto">
+					<h2 style="margin-bottom: 1rem">Admin Access</h2>
+					<div class="alert alert-error" id="login-error"></div>
+					<form id="login-form">
+						<div class="form-group">
+							<label>Email</label
+							><input type="email" id="admin-email" required />
+						</div>
+						<div class="form-group">
+							<label>Password</label
+							><input type="password" id="admin-pass" required />
+						</div>
+						<button type="submit" class="btn btn-primary" style="width: 100%">
+							Login
+						</button>
+					</form>
+				</div>
+			</section>
+
+			<section id="admin-dashboard" class="page">
+				<div class="justify-between flex" style="margin-bottom: 1.5rem">
+					<h1>Product Management</h1>
+					<button class="btn btn-primary" id="add-product-btn">
+						+ Add Product
+					</button>
+				</div>
+				<div
+					class="alert alert-success"
+					id="dash-success"
+					style="display: none"
+				></div>
+				<div class="filter-box" style="padding: 0; overflow-x: auto">
+					<table id="products-table">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Brand</th>
+								<th>Price</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</section>
+
+			<section id="contact" class="page">
+				<h1 style="margin-bottom: 1rem">Get in Touch</h1>
+				<div
+					style="
+						display: grid;
+						grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+						gap: 2rem;
+					"
+				>
+					<div>
+						<form id="contact-form">
+							<div class="form-group">
+								<label>Name</label><input type="text" id="c-name" required />
+							</div>
+							<div class="form-group">
+								<label>Email</label><input type="email" id="c-email" required />
+							</div>
+							<div class="form-group">
+								<label>Message</label
+								><textarea id="c-msg" rows="4" required></textarea>
+							</div>
+							<button type="submit" class="btn btn-primary">
+								Send Message
+							</button>
+						</form>
+					</div>
+					<div
+						style="
+							padding: 2rem;
+							background: var(--surface);
+							border-radius: var(--radius);
+						"
+					>
+						<h3>Why contact us?</h3>
+						<ul style="margin: 1rem 0 1rem 1.5rem; color: var(--text-muted)">
+							<li>Request bulk pricing</li>
+							<li>Custom configuration queries</li>
+							<li>Warranty & support details</li>
+							<li>Direct admin communication</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<div class="modal" id="detail-modal">
+			<div class="modal-content">
+				<button class="close-modal">&times;</button>
+				<div id="modal-body"></div>
+			</div>
+		</div>
+		<div class="modal" id="form-modal">
+			<div class="modal-content">
+				<button class="close-modal">&times;</button>
+				<h2 id="form-title">Add Product</h2>
+				<form id="product-form">
+					<input type="hidden" id="p-id" />
+					<div class="form-group">
+						<input
+							type="text"
+							id="p-name"
+							placeholder="Product Name"
+							required
+						/>
+					</div>
+					<div class="flex">
+						<div class="form-group" style="flex: 1">
+							<select id="p-type" required>
+								<option value="Laptop">Laptop</option>
+								<option value="iPhone">iPhone</option>
+							</select>
+						</div>
+						<div class="form-group" style="flex: 1">
+							<select id="p-brand" required>
+								<option value="Apple">Apple</option>
+								<option value="HP">HP</option>
+								<option value="Dell">Dell</option>
+								<option value="Lenovo">Lenovo</option>
+							</select>
+						</div>
+					</div>
+					<div class="flex">
+						<div class="form-group" style="flex: 1">
+							<input
+								type="number"
+								id="p-price"
+								placeholder="Price ($)"
+								required
+							/>
+						</div>
+						<div class="form-group" style="flex: 1">
+							<select id="p-condition">
+								<option value="New">New</option>
+								<option value="Used">Used</option>
+							</select>
+						</div>
+					</div>
+					<div class="flex">
+						<div class="form-group" style="flex: 1">
+							<input
+								type="text"
+								id="p-ram"
+								placeholder="RAM (e.g. 16GB)"
+								required
+							/>
+						</div>
+						<div class="form-group" style="flex: 1">
+							<input
+								type="text"
+								id="p-storage"
+								placeholder="Storage (e.g. 512GB SSD)"
+								required
+							/>
+						</div>
+						<div class="form-group" style="flex: 1">
+							<input type="text" id="p-cpu" placeholder="Processor" required />
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Image</label
+						><input type="file" id="p-image" accept="image/*" /><img
+							id="p-img-preview"
+							class="hidden"
+							style="max-height: 100px; margin-top: 0.5rem; border-radius: 8px"
+						/>
+					</div>
+					<button type="submit" class="btn btn-primary" style="width: 100%">
+						Save Product
+					</button>
+				</form>
+			</div>
+		</div>
+
+		<footer>
+			&copy; 2026 TechStore SaaS. All rights reserved. | Built for performance &
+			scale.
+		</footer>
+	</body>
+</html>
