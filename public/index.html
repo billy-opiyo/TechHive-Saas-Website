@@ -84,9 +84,9 @@
 							<label>Type</label
 							><select id="filter-type">
 								<option value="all">All</option>
-								<option value="Laptop">Laptops</option>
-								<option value="iPhones">iPhones</option>
-								<option value="Androids">Androids</option>
+								<option value="Laptop">Laptop</option>
+								<option value="iPhones">iPhone</option>
+								<option value="Androids">Android</option>
 							</select>
 						</div>
 						<div class="form-group">
@@ -376,9 +376,9 @@
 					<div class="flex">
 						<div class="form-group" style="flex: 1">
 							<select id="p-type" required>
-								<option value="Laptops">Laptops</option>
-								<option value="iPhones">iPhones</option>
-								<option value="Androids">Androids</option>
+								<option value="Laptops">Laptop</option>
+								<option value="iPhones">iPhone</option>
+								<option value="Androids">Android</option>
 							</select>
 						</div>
 						<div class="form-group" style="flex: 1">
@@ -437,6 +437,16 @@
 						Save Product
 					</button>
 				</form>
+			</div>
+		</div>
+
+		<div class="confirm-modal" id="confirm-modal">
+			<div class="confirm-box">
+				<h3 id="confirm-text">Delete this product?</h3>
+				<div class="confirm-actions">
+					<button class="btn btn-secondary" id="confirm-cancel">Cancel</button>
+					<button class="btn btn-danger" id="confirm-ok">Delete</button>
+				</div>
 			</div>
 		</div>
 

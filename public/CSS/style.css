@@ -244,6 +244,7 @@ select {
     color: var(--text);
     font-family: inherit;
     transition: var(--transition);
+    cursor: pointer;
 }
 
 input:focus,
@@ -307,13 +308,27 @@ select:focus {
 .badge {
     position: absolute;
     top: 1rem;
-    left: 1rem;
     background: var(--primary);
     color: white;
     padding: 0.25rem 0.6rem;
     border-radius: 999px;
     font-size: 0.75rem;
     font-weight: 600;
+}
+
+.badge:first-of-type {
+    left: 1rem;
+}
+
+.badge:nth-of-type(2) {
+    right: 1rem;
+    left: auto;
+}
+
+.modal .badge {
+    position: static;
+    display: inline-block;
+    margin: 0.25rem;
 }
 
 .filters-layout {
@@ -389,6 +404,53 @@ body.modal-open {
     color: var(--text-muted);
     cursor: pointer;
     font-size: 1.5rem;
+    z-index: 100;
+}
+
+.confirm-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 300;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition);
+}
+
+.confirm-modal.open {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.confirm-box {
+    background: var(--surface);
+    padding: 2rem;
+    border-radius: var(--radius);
+    max-width: 400px;
+    width: 90%;
+    border: 1px solid var(--border);
+    transform: scale(0.9);
+    transition: transform var(--transition);
+    text-align: center;
+}
+
+.confirm-modal.open .confirm-box {
+    transform: scale(1);
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    justify-content: center;
+}
+
+.confirm-actions .btn {
+    min-width: 100px;
+    justify-content: center;
 }
 
 table {

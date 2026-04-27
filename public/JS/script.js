@@ -48,6 +48,10 @@ const DOM = {
 	detailModal: document.getElementById("detail-modal"),
 	modalBody: document.getElementById("modal-body"),
 	formModal: document.getElementById("form-modal"),
+	confirmModal: document.getElementById("confirm-modal"),
+	confirmText: document.getElementById("confirm-text"),
+	confirmCancel: document.getElementById("confirm-cancel"),
+	confirmOk: document.getElementById("confirm-ok"),
 	loginError: document.getElementById("login-error"),
 	dashSuccess: document.getElementById("dash-success"),
 	contactAlert: document.getElementById("contact-alert"),
@@ -115,10 +119,29 @@ onAuthStateChanged(auth, (user) => {
 })
 
 // 📥 Load Public Data
+function populateBrandFilter() {
+	// Extract unique brands from existing products
+	const uniqueBrands = [...new Set(products.map(p => p.brand))].sort();
+	
+	// Clear existing options except "All Brands"
+	DOM.filterBrand.innerHTML = '<option value="all">All Brands</option>';
+	
+	// Add dynamic brand options
+	uniqueBrands.forEach(brand => {
+		if (brand && brand.trim()) { // Skip empty/null brands
+			const option = document.createElement('option');
+			option.value = brand;
+			option.textContent = brand;
+			DOM.filterBrand.appendChild(option);
+		}
+	});
+}
+
 async function loadProducts() {
 	try {
 		const snap = await getDocs(collection(db, "products"))
 		products = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
+		populateBrandFilter(); // Populate filter with actual brands
 		renderFeatured()
 		applyFilters()
 	} catch (err) {
@@ -201,11 +224,16 @@ function applyFilters() {
 		const matchSearch =
 			p.name.toLowerCase().includes(search) ||
 			p.brand.toLowerCase().includes(search)
+			
+		// Normalize type to handle singular/plural mismatches
+		const normalizedType = (p.type || '').toLowerCase().replace(/s$/, '');
+		const normalizedFilterType = type.toLowerCase().replace(/s$/, '');
+		
 		return (
 			matchSearch &&
-			(type === "all" || p.type === type) &&
-			(brand === "all" || p.brand === brand) &&
-			(cond === "all" || p.condition === cond)
+			(type === "all" || normalizedType === normalizedFilterType) &&
+			(brand === "all" || p.brand.toLowerCase() === brand.toLowerCase()) &&
+			(cond === "all" || p.condition.toLowerCase() === cond.toLowerCase())
 		)
 	})
 
@@ -276,9 +304,30 @@ document.addEventListener("click", (e) => {
 		DOM.formModal.classList.add("open")
 	}
 
+	// Custom Confirm Dialog
+	let confirmCallback = null;
+	
+	function showConfirm(message, callback) {
+		DOM.confirmText.textContent = message
+		confirmCallback = callback
+		DOM.confirmModal.classList.add("open")
+	}
+	
+	DOM.confirmCancel.addEventListener("click", () => {
+		DOM.confirmModal.classList.remove("open")
+		confirmCallback = null
+	})
+	
+	DOM.confirmOk.addEventListener("click", () => {
+		DOM.confirmModal.classList.remove("open")
+		if (confirmCallback) confirmCallback()
+		confirmCallback = null
+	})
+
 	if (target.matches(".del-btn")) {
-		if (!confirm("Delete this product?")) return
-		deleteProduct(target.dataset.id)
+		showConfirm("Delete this product?", () => {
+			deleteProduct(target.dataset.id)
+		})
 	}
 
 	// Close Modals
