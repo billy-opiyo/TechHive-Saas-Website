@@ -441,19 +441,62 @@ document.getElementById("logout-btn").addEventListener("click", async () => {
 	navigateTo("home")
 })
 
-// 📞 Contact Form
-document.getElementById("contact-form").addEventListener("submit", (e) => {
-	e.preventDefault()
-	const name = document.getElementById("c-name").value
-	const msg = document.getElementById("c-msg").value
-	if (msg.length < 10) return alert("Message too short.")
-	showLoader()
-	setTimeout(() => {
-		hideLoader()
-		e.target.reset()
-		alert(`Thanks ${name}! We'll reply shortly.`)
-	}, 800)
-})
+// 📞 Contact Form - FormSubmit Integration (NO API KEYS NEEDED!)
+document
+	.getElementById("contact-form")
+	.addEventListener("submit", async (e) => {
+		e.preventDefault()
+
+		const name = document.getElementById("c-name").value.trim()
+		const email = document.getElementById("c-email").value.trim()
+		const message = document.getElementById("c-msg").value.trim()
+
+		if (message.length < 10) {
+			alert("Message too short. Please enter at least 10 characters.")
+			return
+		}
+
+		showLoader()
+
+		try {
+			const formData = new FormData()
+			formData.append("Name", name)
+			formData.append("Email", email)
+			formData.append("Message", message)
+			formData.append(
+				"_subject",
+				"New Contact Form Message from TechStore Website",
+			)
+			formData.append("_captcha", "false")
+
+			// ✅ Replace with your actual email address below
+			const response = await fetch(
+				"https://formsubmit.co/ajax/babsohaleem01@gmail.com",
+				{
+					method: "POST",
+					body: formData,
+				},
+			)
+
+			const result = await response.json()
+
+			if (result.success) {
+				e.target.reset()
+				alert(
+					`✅ Thank you ${name}! Your message has been sent successfully. We'll reply shortly.`,
+				)
+			} else {
+				throw new Error(result.message || "Server error")
+			}
+		} catch (error) {
+			console.error("Contact Form Error:", error)
+			alert(
+				`❌ Failed to send message. Please try again or contact us directly via email/phone.`,
+			)
+		} finally {
+			hideLoader()
+		}
+	})
 
 // 🌙 Theme Toggle
 document.querySelector(".theme-toggle").addEventListener("click", () => {
