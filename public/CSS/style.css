@@ -1,4 +1,4 @@
-/* style.css - Main CSS for TechHive website */
+/* style.css - Main CSS for TechStore website */
 :root {
     --primary: #6366f1;
     --primary-hover: #4f46e5;
@@ -440,18 +440,30 @@ footer {
 .alert {
     padding: 1rem;
     border-radius: var(--radius);
-    margin-bottom: 1rem;
     display: none;
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    min-width: 320px;
+    z-index: 9998;
+    transform: translateX(120%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+}
+
+.alert.show {
+    transform: translateX(0);
 }
 
 .alert-error {
-    background: rgba(239, 68, 68, 0.1);
+    background: rgba(239, 68, 68, 0.15);
     border: 1px solid var(--error);
     color: var(--error);
 }
 
 .alert-success {
-    background: rgba(34, 197, 94, 0.1);
+    background: rgba(34, 197, 94, 0.15);
     border: 1px solid var(--success);
     color: var(--success);
 }

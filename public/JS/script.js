@@ -1,4 +1,4 @@
-//script.js - Main JS for TechHive website
+//script.js - Main JS for TechStore website
 
 // 📦 Firebase SDK Imports (Auth + Firestore ONLY - Storage removed)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"
@@ -50,6 +50,7 @@ const DOM = {
 	formModal: document.getElementById("form-modal"),
 	loginError: document.getElementById("login-error"),
 	dashSuccess: document.getElementById("dash-success"),
+	contactAlert: document.getElementById("contact-alert"),
 	authLink: document.getElementById("auth-link"),
 	logoutBtn: document.getElementById("logout-btn"),
 	pImgPreview: document.getElementById("p-img-preview"),
@@ -68,7 +69,13 @@ const showAlert = (el, msg, type = "success") => {
 	el.textContent = msg
 	el.className = `alert alert-${type}`
 	el.style.display = "block"
-	setTimeout(() => (el.style.display = "none"), 3500)
+	// Trigger animation
+	setTimeout(() => el.classList.add("show"), 10)
+	// Hide after 5 seconds
+	setTimeout(() => {
+		el.classList.remove("show")
+		setTimeout(() => (el.style.display = "none"), 400)
+	}, 5000)
 }
 const formatPrice = (p) => `Ksh${p.toLocaleString()}`
 
@@ -482,16 +489,20 @@ document
 
 			if (result.success) {
 				e.target.reset()
-				alert(
+				showAlert(
+					DOM.contactAlert,
 					`✅ Thank you ${name}! Your message has been sent successfully. We'll reply shortly.`,
+					"success",
 				)
 			} else {
 				throw new Error(result.message || "Server error")
 			}
 		} catch (error) {
 			console.error("Contact Form Error:", error)
-			alert(
+			showAlert(
+				DOM.contactAlert,
 				`❌ Failed to send message. Please try again or contact us directly via email/phone.`,
+				"error",
 			)
 		} finally {
 			hideLoader()
