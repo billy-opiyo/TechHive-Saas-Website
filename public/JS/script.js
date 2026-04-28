@@ -121,35 +121,36 @@ onAuthStateChanged(auth, (user) => {
 // 📥 Load Public Data
 function populateBrandFilter() {
 	// Extract unique brands from existing products
-	const uniqueBrands = [...new Set(products.map(p => p.brand))].sort();
-	
+	const uniqueBrands = [...new Set(products.map((p) => p.brand))].sort()
+
 	// Get existing static brands from HTML
-	const staticBrands = Array.from(DOM.filterBrand.querySelectorAll('option'))
-		.map(opt => opt.value)
-		.filter(val => val !== 'all' && val.trim());
-	
+	const staticBrands = Array.from(DOM.filterBrand.querySelectorAll("option"))
+		.map((opt) => opt.value)
+		.filter((val) => val !== "all" && val.trim())
+
 	// Merge both lists, remove duplicates
-	const allBrands = [...new Set([...staticBrands, ...uniqueBrands])].sort();
-	
+	const allBrands = [...new Set([...staticBrands, ...uniqueBrands])].sort()
+
 	// Clear existing options except "All Brands"
-	DOM.filterBrand.innerHTML = '<option value="all">All Brands</option>';
-	
+	DOM.filterBrand.innerHTML = '<option value="all">All Brands</option>'
+
 	// Add ALL brands (static HTML + existing product brands)
-	allBrands.forEach(brand => {
-		if (brand && brand.trim()) { // Skip empty/null brands
-			const option = document.createElement('option');
-			option.value = brand;
-			option.textContent = brand;
-			DOM.filterBrand.appendChild(option);
+	allBrands.forEach((brand) => {
+		if (brand && brand.trim()) {
+			// Skip empty/null brands
+			const option = document.createElement("option")
+			option.value = brand
+			option.textContent = brand
+			DOM.filterBrand.appendChild(option)
 		}
-	});
+	})
 }
 
 async function loadProducts() {
 	try {
 		const snap = await getDocs(collection(db, "products"))
 		products = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
-		populateBrandFilter(); // Populate filter with actual brands
+		populateBrandFilter() // Populate filter with actual brands
 		renderFeatured()
 		applyFilters()
 	} catch (err) {
@@ -232,11 +233,11 @@ function applyFilters() {
 		const matchSearch =
 			p.name.toLowerCase().includes(search) ||
 			p.brand.toLowerCase().includes(search)
-			
+
 		// Normalize type to handle singular/plural mismatches
-		const normalizedType = (p.type || '').toLowerCase().replace(/s$/, '');
-		const normalizedFilterType = type.toLowerCase().replace(/s$/, '');
-		
+		const normalizedType = (p.type || "").toLowerCase().replace(/s$/, "")
+		const normalizedFilterType = type.toLowerCase().replace(/s$/, "")
+
 		return (
 			matchSearch &&
 			(type === "all" || normalizedType === normalizedFilterType) &&
@@ -282,7 +283,7 @@ document.addEventListener("click", (e) => {
         <p><strong>RAM:</strong> ${p.ram} | <strong>Storage:</strong> ${p.storage}</p>
       </div>
       <div style="font-size:1.5rem; color:var(--accent); font-weight:700; margin-bottom:1rem;">${formatPrice(p.price)}</div>
-      <a href="https://wa.me/254740470381?text=${encodeURIComponent(`Hi, I'm interested in the ${p.name} (KSh ${p.price}) listed on TechStore. Is it available?`)}" target="_blank" class="btn btn-whatsapp">💬 Buy via WhatsApp</a>`
+      <a href="https://wa.me/254740470381?text=${encodeURIComponent(`Hello, I would like to order ${p.name} which costs ${formatPrice(p.price)}. Kindly confirm if this item is currently available and provide delivery information. Thank you.`)}" target="_blank" class="btn btn-whatsapp">💬 Order via Whatsapp</a>`
 		DOM.detailModal.classList.add("open")
 		document.body.classList.add("modal-open")
 	}
@@ -313,19 +314,19 @@ document.addEventListener("click", (e) => {
 	}
 
 	// Custom Confirm Dialog
-	let confirmCallback = null;
-	
+	let confirmCallback = null
+
 	function showConfirm(message, callback) {
 		DOM.confirmText.textContent = message
 		confirmCallback = callback
 		DOM.confirmModal.classList.add("open")
 	}
-	
+
 	DOM.confirmCancel.addEventListener("click", () => {
 		DOM.confirmModal.classList.remove("open")
 		confirmCallback = null
 	})
-	
+
 	DOM.confirmOk.addEventListener("click", () => {
 		DOM.confirmModal.classList.remove("open")
 		if (confirmCallback) confirmCallback()
