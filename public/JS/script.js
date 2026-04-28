@@ -123,11 +123,19 @@ function populateBrandFilter() {
 	// Extract unique brands from existing products
 	const uniqueBrands = [...new Set(products.map(p => p.brand))].sort();
 	
+	// Get existing static brands from HTML
+	const staticBrands = Array.from(DOM.filterBrand.querySelectorAll('option'))
+		.map(opt => opt.value)
+		.filter(val => val !== 'all' && val.trim());
+	
+	// Merge both lists, remove duplicates
+	const allBrands = [...new Set([...staticBrands, ...uniqueBrands])].sort();
+	
 	// Clear existing options except "All Brands"
 	DOM.filterBrand.innerHTML = '<option value="all">All Brands</option>';
 	
-	// Add dynamic brand options
-	uniqueBrands.forEach(brand => {
+	// Add ALL brands (static HTML + existing product brands)
+	allBrands.forEach(brand => {
 		if (brand && brand.trim()) { // Skip empty/null brands
 			const option = document.createElement('option');
 			option.value = brand;

@@ -90,6 +90,12 @@ body {
     background: #165EAB;
 }
 
+/* Fix contact links color to match primary purple */
+a[href^="mailto:"],
+a[href^="tel:"] {
+    color: var(--primary) !important;
+}
+
 nav {
     display: flex;
     align-items: center;
@@ -348,6 +354,11 @@ select:focus {
     padding: 1.5rem;
     border-radius: var(--radius);
     border: 1px solid var(--border);
+    height: fit-content;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+    position: sticky;
+    top: 100px;
 }
 
 .filter-box h3 {
