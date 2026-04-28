@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "techhive-billydev"
+  },
+  "targets": {
+    "techhive-billydev": {
+      "hosting": {
+        "main-site": [
+          "techstore-billydev"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
